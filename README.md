@@ -1,5 +1,10 @@
+# Deploy a machine learning prediction platform using the python flavored AWS CDK and API Gateway Proxy Integration With Lambda
 
-# Welcome to your CDK Python project!
+This project quickly deploys an API Gateway fronted Lambda function which can be queried by any web client to provide machine learning predictions.
+
+
+
+## Welcome to your CDK Python project!
 
 This is a blank project for Python development with CDK.
 
