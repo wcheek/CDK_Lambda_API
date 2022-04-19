@@ -1,10 +1,8 @@
 import aws_cdk as cdk
 
-from cdk_lambda_model_predictions.lambda_api_stack import (
-    LambdaModelPredictionsStack,
-)
+from cdk_lambda_stack.lambda_api_stack import LambdaAPIStack
 
 app = cdk.App()
-LambdaModelPredictionsStack(app, "LambdaModelPredictionsStack")
+LambdaAPIStack(app, "LambdaModelPredictionsStack")
 
 app.synth()
