@@ -11,6 +11,7 @@ Through the API, the Lambda function can be queried by any web client to provide
 Note: Besides for the standard cdk libraries, you should include `aws-cdk.aws-lambda-python-alpha`.
 This experimental library allows CDK to build the Lambda function including additional libraries at deployment time.
 You will need `Docker` to use this deployment method.
+4) Make sure you have activated your AWS credentials and `cdk deploy`
 
 
 

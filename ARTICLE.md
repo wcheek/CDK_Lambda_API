@@ -1,3 +1,44 @@
+# Deploying an API fronted Lambda function using AWS CDK
+
+This project aims to be a minimum working example of deploying a Lambda function accessible through an API Gateway using Python flavored AWS CDK. The API allows you to pass data directly into the Lambda function and get a response back with a result.
+
+## What is possible using this pattern?
+
+1)   Pass data to the function, get a machine learning prediction back.
+2)   Request a file stored on `S3`, get a secure link back.
+3)   Send parameters to the function, get complex calculations back.
+4)   Database retrieval.
+     etc...
+
+The [Github repository can be found here.](https://github.com/wcheek/CDK_Lambda_API)
+
+## CDK init & deploy
+
+I won’t cover setting up CDK and bootstrapping the environment. You can find that information [here.](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)
+
+Once you have set up CDK, we need to set up the project:
+
+1. `mkdir CDK_Lambda_API && cd CDK_Lambda_API`
+
+2. `cdk init --language python`
+
+3. `source .venv/bin/activate`
+
+4. Optional: If you need additional libraries in your Lambda function, add `aws-cdk.aws-lambda-python-alpha` to requirements.txt to allow custom builds during stack deployment using Docker.
+
+5. `pip install -r requirements.txt && pip install -r requirements-dev.txt`
+
+    Now deploy stack to AWS:
+
+6. `cdk deploy`
+
+## Stack design
+
+This stack will deploy a lambda function using `aws-lambda-python-alpha` to build the function with all its additional libraries using a docker container. Make sure to have Docker installed and the daemon running.
+
+```python
+# prediction
+
 from aws_cdk import Stack
 from aws_cdk import aws_apigateway as apigw
 from aws_cdk import aws_lambda as _lambda
@@ -44,3 +85,6 @@ class LambdaModelPredictionsStack(Stack):
         self.gateway = apigw.LambdaRestApi(
             self, "Endpoint", handler=self.prediction_lambda
         )
+
+```
+
