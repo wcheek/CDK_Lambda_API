@@ -28,7 +28,7 @@ Once you have set up CDK, we need to set up the project:
 
 5. `pip install -r requirements.txt && pip install -r requirements-dev.txt`
 
-    Now deploy stack to AWS:
+    Now deploy empty stack to AWS:
 
 6. `cdk deploy`
 
@@ -37,7 +37,7 @@ Once you have set up CDK, we need to set up the project:
 This stack will deploy a lambda function using `aws-lambda-python-alpha` to build the function with all its additional libraries using a docker container. Make sure to have Docker installed and the daemon running before running `cdk deploy`.
 
 ```python
-# prediction_lambda.py
+# lambda_api_stack.py
 
 from aws_cdk import Stack
 from aws_cdk import aws_apigateway as apigw
@@ -68,14 +68,14 @@ class LambdaModelPredictionsStack(Stack):
             scope=self,
             id="PredictionLambda",
             # entry points to the directory
-            entry="lambda_funcs/PredictionLambda",
+            entry="lambda_funcs/APILambda",
             # index is the file name
-            index="prediction_lambda.py",
+            index="API_lambda.py",
             # handler is the function entry point name in the lambda.py file
             handler="handler",
             runtime=_lambda.Runtime.PYTHON_3_9,
             # name of function on AWS
-            function_name="PredictionLambda",
+            function_name="ExampleAPILambda",
         )
 
     def build_gateway(self):
@@ -90,9 +90,11 @@ class LambdaModelPredictionsStack(Stack):
 
 ## Minimum Working Lambda Function
 
-You can see [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html) for an example of the format the API gateway is expecting.
+You can see [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html) an example of the response format the API gateway is expecting.
 
 ```python
+# lambda_funcs/APILambda/API_lambda.py
+
 from logging import getLogger
 
 logger = getLogger()
@@ -112,4 +114,16 @@ def handler(event, context):
     return response
 
 ```
+
+Now you can do `cdk deploy`. The lambda function will be built using docker and uploaded to the bootstrapped ECR repository. Once the project is built, it will synth a `CloudFormation` template and begin deploying the infrastructure. You can watch your stack deploy on `AWS CloudFormation` - it should be quick since the infrastructure is relatively simple.
+
+Once the process is completed, CDK will output the endpoint URL of the API Gateway:
+
+![graphic](D:\Projects\Notes\My Articles\CDK_Lambda_API\Assets\graphic.png)
+
+## Query the API Gateway
+
+To query the API gateway and get a response back from your lambda function, just send a get request using `requests` or `Postman`
+
+![graphic2](D:\Projects\Notes\My Articles\CDK_Lambda_API\Assets\graphic2.png)
 
