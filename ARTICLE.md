@@ -34,10 +34,10 @@ Once you have set up CDK, we need to set up the project:
 
 ## Stack design
 
-This stack will deploy a lambda function using `aws-lambda-python-alpha` to build the function with all its additional libraries using a docker container. Make sure to have Docker installed and the daemon running.
+This stack will deploy a lambda function using `aws-lambda-python-alpha` to build the function with all its additional libraries using a docker container. Make sure to have Docker installed and the daemon running before running `cdk deploy`.
 
 ```python
-# prediction
+# prediction_lambda.py
 
 from aws_cdk import Stack
 from aws_cdk import aws_apigateway as apigw
@@ -85,6 +85,31 @@ class LambdaModelPredictionsStack(Stack):
         self.gateway = apigw.LambdaRestApi(
             self, "Endpoint", handler=self.prediction_lambda
         )
+
+```
+
+## Minimum Working Lambda Function
+
+You can see [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html) for an example of the format the API gateway is expecting.
+
+```python
+from logging import getLogger
+
+logger = getLogger()
+logger.setLevel(level="DEBUG")
+
+
+def handler(event, context):
+    logger.debug(msg=f"Initial event: {event}")
+    response = {
+        "isBase64Encoded": False,
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+        },
+        "body": f"Nice! You said {event['queryStringParameters']['q']}",
+    }
+    return response
 
 ```
 

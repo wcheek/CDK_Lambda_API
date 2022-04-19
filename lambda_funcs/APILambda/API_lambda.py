@@ -14,5 +14,4 @@ def handler(event, context):
         },
         "body": f"Nice! You said {event['queryStringParameters']['q']}",
     }
-
     return response

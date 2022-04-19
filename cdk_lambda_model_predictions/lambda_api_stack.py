@@ -27,14 +27,14 @@ class LambdaModelPredictionsStack(Stack):
             scope=self,
             id="PredictionLambda",
             # entry points to the directory
-            entry="lambda_funcs/PredictionLambda",
+            entry="lambda_funcs/APILambda",
             # index is the file name
-            index="prediction_lambda.py",
+            index="API_lambda.py",
             # handler is the function entry point name in the lambda.py file
             handler="handler",
             runtime=_lambda.Runtime.PYTHON_3_9,
             # name of function on AWS
-            function_name="PredictionLambda",
+            function_name="ExampleAPILambda",
         )
 
     def build_gateway(self):
